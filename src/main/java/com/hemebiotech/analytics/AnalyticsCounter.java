@@ -1,6 +1,7 @@
 package com.hemebiotech.analytics;
 
 import com.hemebiotech.analytics.reader.ReadSymptomDataFromFile;
+import com.hemebiotech.analytics.utils.UtilCounter;
 import com.hemebiotech.analytics.writer.WriteSortedSymptoms;
 
 import java.io.BufferedReader;
@@ -20,24 +21,11 @@ public class AnalyticsCounter {
 		ReadSymptomDataFromFile reader = new ReadSymptomDataFromFile("symptoms.txt");
 		List<String> symptoms = reader.GetSymptoms();
 
-		Map<String, Integer> existingSymptoms = new HashMap<String, Integer>();
-		int line = 0;
+		//Count the symptoms and put them in a Map : values:symptoms/keys:number of appearance
+		Map<String, Integer> existingSymptoms = UtilCounter.countSymptoms(symptoms);
 
-		for (String symptom : symptoms) {
-			line++;
-			//If the line is empty log the line number
-			if (symptom.equals(""))
-				System.out.println("line " + line + " is empty");
-			//If symptom exist increment the map's value
-			if (existingSymptoms.containsKey(symptom))
-				existingSymptoms.put(symptom, existingSymptoms.get(symptom) + 1);
-			else
-				//else put the symptom in the map and instantiate the value to one
-				existingSymptoms.put(symptom, 1);
-
-			//Write the sorted symptoms in the output file
-			WriteSortedSymptoms writer = new WriteSortedSymptoms("result.out", existingSymptoms);
-			writer.writeSymptoms();
-		}
+		//Write the sorted symptoms in the output file
+		WriteSortedSymptoms writer = new WriteSortedSymptoms("result.out", existingSymptoms);
+		writer.writeSymptoms();
 	}
 }
