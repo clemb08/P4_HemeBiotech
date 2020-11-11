@@ -1,6 +1,7 @@
 package com.hemebiotech.analytics;
 
 import com.hemebiotech.analytics.reader.ReadSymptomDataFromFile;
+import com.hemebiotech.analytics.writer.WriteSortedSymptoms;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,12 +35,9 @@ public class AnalyticsCounter {
 				//else put the symptom in the map and instantiate the value to one
 				existingSymptoms.put(symptom, 1);
 
-			// next generate output
-			FileWriter writer = new FileWriter("result.out");
-			writer.write("headache: " + headacheCount + "\n");
-			writer.write("rash: " + rashCount + "\n");
-			writer.write("dialated pupils: " + pupilCount + "\n");
-			writer.close();
+			//Write the sorted symptoms in the output file
+			WriteSortedSymptoms writer = new WriteSortedSymptoms("result.out", existingSymptoms);
+			writer.writeSymptoms();
 		}
 	}
 }
