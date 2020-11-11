@@ -11,11 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Main Class of the Program
+ *
+ */
 public class AnalyticsCounter {
-	private static int headacheCount = 0;	// initialize to 0
-	private static int rashCount = 0;		// initialize to 0
-	private static int pupilCount = 0;		// initialize to 0
-	
+
+	/**
+	 * @param args command-line arguments
+	 *
+	 */
 	public static void main(String args[]) throws Exception {
 		// Read the file with the util class & return List of String
 		ReadSymptomDataFromFile reader = new ReadSymptomDataFromFile("symptoms.txt");
