@@ -1,5 +1,6 @@
 package com.hemebiotech.analytics.writer;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -36,10 +37,10 @@ public class WriteSortedSymptoms implements ISymptomWriter {
                     .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
                             (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-            if (filepath != null)
+            if (filepath != null) {
                 //Iterate through the LinkedHashMap to write the symptoms in the file
                 try {
-                    FileWriter writer = new FileWriter(filepath);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
                     for (Map.Entry<String, Integer> symptom : sortedSymptoms.entrySet()) {
                         writer.write(symptom.getKey() + " = " + symptom.getValue() + "\n");
                     }
@@ -47,6 +48,7 @@ public class WriteSortedSymptoms implements ISymptomWriter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
         }
     }
 }
