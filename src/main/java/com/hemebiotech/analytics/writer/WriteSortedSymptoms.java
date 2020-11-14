@@ -1,5 +1,6 @@
 package com.hemebiotech.analytics.writer;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -29,21 +30,25 @@ public class WriteSortedSymptoms implements ISymptomWriter {
     @Override
     public void writeSymptoms() {
 
-        //Use Stream to sort the symptoms then return a LinkedHashMap to keep it sorted
-        Map<String, Integer> sortedSymptoms = symptoms.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        if (symptoms != null) {
+            //Use Stream to sort the symptoms then return a LinkedHashMap to keep it sorted
+            Map<String, Integer> sortedSymptoms = symptoms.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-        //Iterate through the LinkedHashMap to write the symptoms in the file
-        try {
-            FileWriter writer = new FileWriter (filepath);
-            for(Map.Entry<String, Integer> symptom : sortedSymptoms.entrySet()) {
-                writer.write(symptom.getKey() + " = " + symptom.getValue() + "\n");
+            if (filepath != null) {
+                //Iterate through the LinkedHashMap to write the symptoms in the file
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+                    for (Map.Entry<String, Integer> symptom : sortedSymptoms.entrySet()) {
+                        writer.write(symptom.getKey() + " = " + symptom.getValue() + "\n");
+                    }
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
